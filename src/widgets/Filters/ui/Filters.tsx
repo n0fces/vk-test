@@ -1,6 +1,6 @@
 import { Card, Flex } from '@radix-ui/themes';
 
-// ! отход от fsd, но это контролируемо
+// отход от fsd, но это контролируемо
 import { ObservableMoviesStoreType } from '@/app/providers/store';
 
 import { SelectCountry } from '@/features/SelectCountry';
