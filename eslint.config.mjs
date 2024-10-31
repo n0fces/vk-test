@@ -52,6 +52,7 @@ export default tseslint.config(
 					allowNumber: true,
 				},
 			],
+			'@typescript-eslint/prefer-nullish-coalescing': 'off',
 		},
 	},
 	{

@@ -21,7 +21,7 @@ interface ListItemsProps {
 	store: ObservableMoviesStoreType;
 }
 
-const ITEM_HEIGHT = 274;
+const ITEM_HEIGHT = 254;
 const WINDOW_HEIGHT = document.documentElement.clientHeight;
 const NODE_PADDING = 5;
 
@@ -45,7 +45,7 @@ export const ListItems = observer(({ store }: ListItemsProps) => {
 		for (let i = 0; i < renderedNodesCount; i++) {
 			const index = i + startIndex;
 			items.push(
-				<div key={store.movies[index].id}>
+				<li key={store.movies[index].id}>
 					<ListItem
 						movie={store.movies[index]}
 						changeDescription={
@@ -62,7 +62,7 @@ export const ListItems = observer(({ store }: ListItemsProps) => {
 							/>
 						}
 					/>
-				</div>,
+				</li>,
 			);
 		}
 

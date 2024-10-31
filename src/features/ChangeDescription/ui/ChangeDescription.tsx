@@ -2,6 +2,8 @@ import { Button, Dialog, Flex, Text, TextField } from '@radix-ui/themes';
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 
+import { Icon } from '@/shared/ui/Icon';
+
 import styles from './styles.module.css';
 
 interface ChangeDescriptionProps {
@@ -25,8 +27,10 @@ export const ChangeDescription = observer(
 		return (
 			<Dialog.Root>
 				<Dialog.Trigger>
-					<Button className={styles.btn}>
-						Предложите свое описание для фильма
+					<Button
+						className={styles.btn}
+						aria-label="Предложите свое описание для фильма">
+						<Icon name="change" className={styles.icon} />
 					</Button>
 				</Dialog.Trigger>
 

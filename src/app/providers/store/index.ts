@@ -43,8 +43,6 @@ class ObservableMoviesStore {
 					const decodedString = decodeURIComponent(value);
 					return { ...acc, [key]: decodedString };
 				}, {});
-		console.log(this.currentPage )
-		console.log(objParams)
 
 			getTitles(this.currentPage, objParams).then(
 				this.addMovies,
