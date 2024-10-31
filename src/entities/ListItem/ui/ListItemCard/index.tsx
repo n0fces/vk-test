@@ -28,7 +28,7 @@ export const ListItemCard = observer(
 							alt={name ?? enName ?? alternativeName}
 						/>
 					</Box>
-					<Box>
+					<Box flexGrow={'1'}>
 						<TextContent movie={movie} />
 					</Box>
 					<Flex direction={'column'} justify={'between'}>
