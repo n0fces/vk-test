@@ -12,8 +12,8 @@
 	left: 50%;
 	transform: translate(-50%, -50%);
 
-	width: 1em;
-	height: 1em;
+	width: 1.125em;
+	height: 1.125em;
 	stroke: #fff;
 	fill: #fff;
 }

@@ -30,7 +30,7 @@ export const ListItemCard = observer(
 					<Box flexGrow={'1'}>
 						<TextContent movie={movie} />
 					</Box>
-					<Flex direction={'column'} justify={'between'}>
+					<Flex justify={'between'} direction={'column'}>
 						{removeItemBtn}
 						{changeDescription}
 					</Flex>

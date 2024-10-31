@@ -30,7 +30,7 @@ export const ChangeDescription = observer(
 					<Button
 						className={styles.btn}
 						aria-label="Предложите свое описание для фильма">
-						<Icon name="change" className={styles.icon} />
+						<Icon name="attention" className={styles.icon} />
 					</Button>
 				</Dialog.Trigger>
 

@@ -1,7 +1,3 @@
-.cnt {
-	flex-direction: column;
-}
-
 @media (width > 768px) {
 	.cnt {
 		flex-direction: row;

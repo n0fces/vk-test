@@ -41,16 +41,12 @@ export const TextContent = observer(({ movie }: TextContentProps) => {
 			direction={'column'}
 			align={'start'}
 			className={styles.cnt}>
-			{title && (
-				<Heading size={'3'} as="h2" className={styles.heading}>
-					{title}
-				</Heading>
-			)}
-			{(secondaryTitle || timestamp || length) && (
-				<Text size={'2'} as="div" className={styles.text}>
-					{stringWithDelimiter(', ', [secondaryTitle, timestamp, length])}
-				</Text>
-			)}
+			<Heading as="h2" className={styles.heading}>
+				{title}
+			</Heading>
+			<Text size="2" as="div" className={styles.text}>
+				{stringWithDelimiter(', ', [secondaryTitle, timestamp, length])}
+			</Text>
 			{(country || genre || director || cast) && (
 				<div>
 					<Text size="2" as="div" className={styles.text}>
@@ -70,10 +66,8 @@ export const TextContent = observer(({ movie }: TextContentProps) => {
 					</Text>
 				</div>
 			)}
-			<Text
-				size={'2'}
-				as="p"
-				className={styles.text + ' ' + styles.description}>
+
+			<Text size="2" as="p" className={styles.text + ' ' + styles.description}>
 				{movie.shortDescription}
 			</Text>
 		</Flex>

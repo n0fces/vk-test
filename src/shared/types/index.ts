@@ -392,7 +392,6 @@ export interface ListItemProps
 		| 'countries'
 		| 'genres'
 		| 'persons'
-		| 'shortDescription'
 	> {
 	id: number;
 	shortDescription: string;
