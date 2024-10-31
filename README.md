@@ -1,50 +1,75 @@
-# React + TypeScript + Vite
+# Лента отображения большого списка на React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Обзор проекта
 
-Currently, two official plugins are available:
+Реализация ленты для отображения большого списка элементов с их подгрузкой по мере скролла. В целях оптимизации отображения большого количество элементов используется концепция виртуальных списков, когда в DOM отображаются только те ноды, которые находятся в зоне видимости пользователя.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## Скрипты проекта
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- `npm run dev` - Запуск проекта в режиме разработки
+- `npm run build` - Запуск production-сборки проекта
+- `npm run test` - Запуск тестов
+- `npm run lint:ts` - Запуск eslint для ts файлов
+- `npm run lint:css` - Запуск eslint для css файлов
+- `npm run prettier` - Запуск форматирования кода через prettier
 
-- Configure the top-level `parserOptions` property like this:
+---
+
+## Конфигурация проекта
+
+Сборка проекта осуществляется при помощи **[vite](https://vite.dev/)**. Основная конфигурация проекта выглядит следующим образом
 
 ```js
-export default tseslint.config({
-	languageOptions: {
-		// other options...
-		parserOptions: {
-			project: ['./tsconfig.node.json', './tsconfig.app.json'],
-			tsconfigRootDir: import.meta.dirname,
-		},
+export default defineConfig({
+	plugins: [react()],
+	resolve: {
+		alias: [{ find: '@', replacement: '/src' }],
+	},
+	test: {
+		globals: true,
+		environment: 'jsdom',
+		setupFiles: './tests/setup.js',
 	},
 });
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+---
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react';
+## Архитектура проекта
 
-export default tseslint.config({
-	// Set the react version
-	settings: { react: { version: '18.3' } },
-	plugins: {
-		// Add the react plugin
-		react,
-	},
-	rules: {
-		// other rules...
-		// Enable its recommended rules
-		...react.configs.recommended.rules,
-		...react.configs['jsx-runtime'].rules,
-	},
-});
-```
+Данный проект построен на основе архитектурного подхода Feature-Sliced Design (FSD), который помогает лучше структурировать фронтенд-приложение для масштабируемости и удобства поддержки. Подробнее про fsd-архитектуру фронтенд приложений можно почитать в **[документации](https://feature-sliced.design/ru/)**.
+
+---
+
+## Данные для отображения списка элементов
+
+Для отображения данных используется открытое API **[OpenMovieDB](https://github.com/OpenMovieDB)**. Информация о фильмах и сериалах парсится с Кинопоиска, IMDB и TMBD
+
+---
+
+## Стилизация
+
+В проекте используется UI-библиотека компонентов Radix UI. При выборе библиотеки для отображения было важно:
+
+- Размер;
+- Поддержка доступности из коробки;
+- Не интересовали библиотеки, которые под капотом используют tailwind;
+- Гибкая настройка стилизованных компонентов (цветовые темы);
+- Документация, где можно наглядно посмотреть, как будет выглядеть тот или иной компонент при разных цветовых решениях и дополнительных настройках;
+- В будущем для оптимизации размера итогового бандла можно использовать данную библиотеку без готовых стилей, а брать за основу только "доступные" компоненты, которые отвечают требованиям WAI-ARIA;
+- Новый опыт, до этого я никогда не использовал эту библиотеку. Использовал некоторую похожую библиотеку headlessui.
+
+Для дополнительной стилизации компонент использовались css-модули.
+
+---
+
+## Поддержание качества кода
+
+Для подддержания качества кода в проекте используются EsLint, Prettier и Stylelint.
+Конфигурация EsLint соответствует 9 версии с использованием Flat Config и подключает ряд конфигураций и плагинов, чтобы проводить статический анализ кодовой базы React-проекта на TypeScript. Подробнее с конфигурацией можно ознакомиться в `eslint.config.mjs`.
+
+Prettier необходим для форматирования кода. Помимо подключения правил, которые я предпочитаю использовать в проектах, есть подключение `@trivago/prettier-plugin-sort-imports` плагина для сортировки импортов в нужном порядке. Для форматирования svg-файлов также включены дополнительные настройки. Подробнее с конфигурацией можно ознакомиться в `prettier.config.mjs`.
+
+Для форматирования файлов стилей используется StyleLint. В файле настройки подключаются стандартные конфигурации для работы с css-файлами, добавляется плагин `stylelint-order` для сортировки css-правил. Весь файл конфигурации `stylelint.config.mjs`.

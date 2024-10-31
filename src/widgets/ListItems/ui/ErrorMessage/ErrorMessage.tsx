@@ -4,13 +4,17 @@ import { Icon } from '@/shared/ui/Icon';
 
 import styles from './styles.module.css';
 
-export const NothingWasFound = () => {
+interface ErrorMessage {
+	error: string;
+}
+
+export const ErrorMessage = ({ error }: ErrorMessage) => {
 	return (
-		<Callout.Root data-testid="NothingWasFound">
+		<Callout.Root color="red" data-testid="ErrorMessage">
 			<Callout.Icon>
 				<Icon name="attention" className={styles.icon} />
 			</Callout.Icon>
-			<Callout.Text>По таким параметрам ничего не найдено :-(</Callout.Text>
+			<Callout.Text>{error}. Попробуйте обновить страницу</Callout.Text>
 		</Callout.Root>
 	);
 };

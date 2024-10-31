@@ -1,8 +1,8 @@
 import { fixupPluginRules } from '@eslint/compat';
 import js from '@eslint/js';
 import tsParser from '@typescript-eslint/parser';
+import vitest from '@vitest/eslint-plugin';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import jest from 'eslint-plugin-jest';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
@@ -58,11 +58,12 @@ export default tseslint.config(
 	{
 		name: 'jest',
 		files: ['**/*.test.ts?(x)'],
-		...jest.configs['flat/recommended'],
-		...jest.configs['flat/style'],
+		plugins: {
+			vitest,
+		},
 		rules: {
-			...jest.configs['flat/recommended'].rules,
-			...jest.configs['flat/style'].rules,
+			...vitest.configs.recommended.rules,
+			'vitest/max-nested-describe': ['error', { max: 3 }],
 		},
 	},
 );

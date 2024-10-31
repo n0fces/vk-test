@@ -54,12 +54,12 @@ export const TextContent = observer(({ movie }: TextContentProps) => {
 							<span>{stringWithDelimiter(' • ', [country, genre])}</span>
 						) : null}
 						{director && (
-							<span className={styles.info}>
+							<span className={styles.directors}>
 								&nbsp;&nbsp;Режиссёр: {director}
 							</span>
 						)}
 						{cast && (
-							<div className={styles.info}>
+							<div className={styles.roles}>
 								В ролях: {stringWithDelimiter(', ', cast)}
 							</div>
 						)}

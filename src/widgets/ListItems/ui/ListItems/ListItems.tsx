@@ -13,6 +13,7 @@ import { ListItem } from '@/entities/ListItem';
 import { useInfiniteScroll } from '@/shared/hooks/useInfiniteScroll/useInfiniteScroll';
 import { useThrottle } from '@/shared/hooks/useThrottle/useThrottle';
 
+import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { NothingWasFound } from '../NothingWasFound/NothingWasFound';
 import { SkeletonList } from '../SkeletonList';
 import styles from './styles.module.css';
@@ -77,6 +78,7 @@ export const ListItems = observer(({ store }: ListItemsProps) => {
 
 	return (
 		<ScrollArea
+			data-testid="ScrollArea"
 			ref={wrapperRef}
 			type="auto"
 			size={'2'}
@@ -92,6 +94,7 @@ export const ListItems = observer(({ store }: ListItemsProps) => {
 				<div ref={triggerRef} style={{ height: '1px' }}></div>
 				{store.state === 'pending' ? <SkeletonList /> : null}
 				{store.totalPage === 0 ? <NothingWasFound /> : null}
+				{store.error !== '' ? <ErrorMessage error={store.error} /> : null}
 			</div>
 		</ScrollArea>
 	);

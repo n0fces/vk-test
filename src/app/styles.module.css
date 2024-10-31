@@ -1,9 +1,13 @@
 .general {
-	padding: 20px 10px 0;
+	padding: 20px 0 0;
 }
 
 @media (width > 768px) {
 	.cnt {
 		flex-direction: row;
+	}
+
+	.general {
+		padding: 20px 10px 0;
 	}
 }

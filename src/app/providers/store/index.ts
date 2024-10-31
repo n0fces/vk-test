@@ -5,7 +5,7 @@ import { getTitles } from '@/widgets/ListItems';
 import { getQueryParams } from '@/shared/helpers/getQueryParams/getQueryParams';
 import { ListItemProps, ListItemsReq } from '@/shared/types';
 
-type State = 'pending' | 'done' | 'error';
+type State = 'pending' | 'done';
 
 class ObservableMoviesStore {
 	movies: ListItemProps[] = [];
@@ -52,6 +52,7 @@ class ObservableMoviesStore {
 	};
 
 	addMovies = (data: ListItemsReq) => {
+		if (this.error !== '') this.error = '';
 		if (this.currentPage === 1) {
 			this.movies = data.docs;
 			this.totalPage = data.pages;

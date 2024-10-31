@@ -24,7 +24,7 @@ const SkeletonItem = () => (
 
 export const SkeletonList = ({ length = 10 }: SkeletonListProps) => {
 	return (
-		<ul>
+		<ul data-testid="SkeletonList">
 			{/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
 			{[...Array(length)].map((_, i) => (
 				<SkeletonItem key={i} />
