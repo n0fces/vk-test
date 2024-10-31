@@ -7,7 +7,7 @@ import { Select } from '@/shared/ui/Select';
 import { years } from '../constants/years';
 
 interface SelectYearsProps {
-	refetch: (page?: number) => void
+	refetch: (page?: number) => void;
 }
 
 export const SelectYears = ({ refetch }: SelectYearsProps) => {

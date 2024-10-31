@@ -20,7 +20,7 @@ const config = {
 		'^@/entities',
 		'^@/shared',
 		'^[.]',
-		'.css$',
+		'module.css$',
 	],
 	importOrderSeparation: true,
 	importOrderSortSpecifiers: true,

@@ -17,7 +17,7 @@ export const ListItemCard = observer(
 	({ removeItemBtn, changeDescription, movie }: ListItemCardProps) => {
 		const { poster, name, enName, alternativeName } = movie;
 		return (
-			<Card size={'2'} style={{height: '250px'}}>
+			<Card size={'2'} style={{ height: '250px' }}>
 				<Flex align={'stretch'} gapX={'5'}>
 					<Box flexBasis={'150'}>
 						<Image

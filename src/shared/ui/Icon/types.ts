@@ -1,1 +1,1 @@
-export type IconName = 'change' | 'remove';
+export type IconName = 'change' | 'remove' | 'attention';

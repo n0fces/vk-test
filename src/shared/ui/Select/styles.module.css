@@ -5,3 +5,8 @@
 .options {
 	max-height: 15rem;
 }
+
+.trigger,
+.option {
+	cursor: pointer;
+}

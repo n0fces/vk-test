@@ -13,6 +13,7 @@ import { ListItem } from '@/entities/ListItem';
 import { useInfiniteScroll } from '@/shared/hooks/useInfiniteScroll/useInfiniteScroll';
 import { useThrottle } from '@/shared/hooks/useThrottle/useThrottle';
 
+import { NothingWasFound } from '../NothingWasFound/NothingWasFound';
 import { SkeletonList } from '../SkeletonList';
 import styles from './styles.module.css';
 
@@ -90,6 +91,7 @@ export const ListItems = observer(({ store }: ListItemsProps) => {
 				<ul className={styles.list}>{generateRows()}</ul>
 				<div ref={triggerRef} style={{ height: '1px' }}></div>
 				{store.state === 'pending' ? <SkeletonList /> : null}
+				{store.totalPage === 0 ? <NothingWasFound /> : null}
 			</div>
 		</ScrollArea>
 	);

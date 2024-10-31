@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client';
 
 import App from './app/App.tsx';
 
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- здесь все под контролем
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
 		<Theme>

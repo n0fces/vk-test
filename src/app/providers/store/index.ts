@@ -32,7 +32,7 @@ class ObservableMoviesStore {
 	fetchMovies = (page?: number) => {
 		if (this.state === 'pending') return;
 		this.currentPage = page ?? this.currentPage;
-		if (this.totalPage >= this.currentPage) {
+		if (this.totalPage === 0 || this.totalPage >= this.currentPage) {
 			this.state = 'pending';
 			const params = getQueryParams({});
 			const objParams = params
@@ -43,6 +43,8 @@ class ObservableMoviesStore {
 					const decodedString = decodeURIComponent(value);
 					return { ...acc, [key]: decodedString };
 				}, {});
+		console.log(this.currentPage )
+		console.log(objParams)
 
 			getTitles(this.currentPage, objParams).then(
 				this.addMovies,

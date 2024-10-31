@@ -39,7 +39,7 @@ export const Select = ({
 			</SelectUI.Trigger>
 			<SelectUI.Content position="popper" className={styles.options}>
 				{options.map((option, idx) => (
-					<SelectUI.Item key={idx} value={option.value}>
+					<SelectUI.Item key={idx} value={option.value} className={styles.option}>
 						{option.label}
 					</SelectUI.Item>
 				))}
