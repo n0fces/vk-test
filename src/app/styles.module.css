@@ -1,0 +1,5 @@
+@media (width > 768px) {
+	.cnt {
+		flex-direction: row;
+	}
+}

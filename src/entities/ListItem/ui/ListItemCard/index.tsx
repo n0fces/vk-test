@@ -17,20 +17,23 @@ export const ListItemCard = observer(
 	({ removeItemBtn, changeDescription, movie }: ListItemCardProps) => {
 		const { poster, name, enName, alternativeName } = movie;
 		return (
-			<Card size={'2'} style={{ height: '250px' }}>
-				<Flex align={'stretch'} gapX={'5'}>
-					<Box flexBasis={'150'}>
+			<Card size={'2'} style={{ height: '230px' }}>
+				<Flex align={'stretch'} gapX={'3'}>
+					<Box flexBasis={'108'}>
 						<Image
-							width={100}
-							height={150}
+							width={72}
+							height={108}
 							src={poster?.previewUrl}
 							alt={name ?? enName ?? alternativeName}
 						/>
 					</Box>
 					<Box flexGrow={'1'}>
-						<TextContent movie={movie} changeDescription={changeDescription} />
+						<TextContent movie={movie} />
 					</Box>
-					{removeItemBtn}
+					<Flex justify={'between'} direction={'column'}>
+						{removeItemBtn}
+						{changeDescription}
+					</Flex>
 				</Flex>
 			</Card>
 		);

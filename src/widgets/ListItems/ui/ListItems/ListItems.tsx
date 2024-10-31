@@ -21,7 +21,7 @@ interface ListItemsProps {
 	store: ObservableMoviesStoreType;
 }
 
-const ITEM_HEIGHT = 274;
+const ITEM_HEIGHT = 254;
 const WINDOW_HEIGHT = document.documentElement.clientHeight;
 const NODE_PADDING = 5;
 

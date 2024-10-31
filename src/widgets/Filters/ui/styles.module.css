@@ -1,4 +1,10 @@
 .card {
-	position: sticky;
-	width: 300px;
+	width: 100%;
+}
+
+@media (width > 768px) {
+	.card {
+		position: sticky;
+		width: 300px;
+	}
 }

@@ -52,8 +52,6 @@
 	},
 	"lint-staged": {
 		"src/**/*": [
-			"prettier --write --ignore-unknown",
-			"npx stylelint \"**/*.css\" --fix",
 			"eslint ."
 		]
 	}
