@@ -37,10 +37,3 @@ h6 {
 	font-weight: inherit;
 	font-size: inherit;
 }
-
-svg {
-	display: block;
-
-	width: 100%;
-	height: 100%;
-}

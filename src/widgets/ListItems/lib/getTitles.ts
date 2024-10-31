@@ -1,12 +1,16 @@
 import { api } from '@/shared/api';
 import { ListItemsReq } from '@/shared/types';
 
-export const getTitles = async (page: number) => {
+export const getTitles = async (
+	page: number,
+	params: Record<string, string>,
+) => {
 	const { data, status } = await api.get<ListItemsReq>('v1.4/movie', {
 		params: {
 			lists: 'popular-films',
 			notNullFields: ['id', 'shortDescription'],
 			page,
+			...params,
 		},
 	});
 
@@ -14,5 +18,5 @@ export const getTitles = async (page: number) => {
 		throw new Error('Failed to fetch data');
 	}
 
-	return data.docs;
+	return data;
 };

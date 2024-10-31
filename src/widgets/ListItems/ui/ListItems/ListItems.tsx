@@ -1,3 +1,4 @@
+import { ScrollArea } from '@radix-ui/themes';
 import { observer } from 'mobx-react-lite';
 import { ReactElement, useRef, useState } from 'react';
 
@@ -74,22 +75,22 @@ export const ListItems = observer(({ store }: ListItemsProps) => {
 	});
 
 	return (
-		<>
-			<div
-				ref={wrapperRef}
-				style={{
-					height: `${WINDOW_HEIGHT}px`,
-					overflow: 'auto',
-				}}
-				onScroll={useThrottle((e) => {
-					setScrollTop(e.currentTarget.scrollTop);
-				}, 17)}>
-				<div style={{ transform: `translateY(${startIndex * ITEM_HEIGHT}px)` }}>
-					<ul className={styles.list}>{generateRows()}</ul>
-					<div ref={triggerRef} style={{ height: '1px' }}></div>
-					{store.state === 'pending' ? <SkeletonList /> : null}
-				</div>
+		<ScrollArea
+			ref={wrapperRef}
+			type="auto"
+			size={'2'}
+			scrollbars="vertical"
+			style={{
+				height: `${WINDOW_HEIGHT}px`,
+			}}
+			onScroll={useThrottle((e) => {
+				setScrollTop(e.currentTarget.scrollTop);
+			}, 17)}>
+			<div style={{ transform: `translateY(${startIndex * ITEM_HEIGHT}px)` }}>
+				<ul className={styles.list}>{generateRows()}</ul>
+				<div ref={triggerRef} style={{ height: '1px' }}></div>
+				{store.state === 'pending' ? <SkeletonList /> : null}
 			</div>
-		</>
+		</ScrollArea>
 	);
 });

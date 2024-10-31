@@ -2,7 +2,8 @@ import { action, makeObservable, observable } from 'mobx';
 
 import { getTitles } from '@/widgets/ListItems';
 
-import { ListItemProps } from '@/shared/types';
+import { getQueryParams } from '@/shared/helpers/getQueryParams/getQueryParams';
+import { ListItemProps, ListItemsReq } from '@/shared/types';
 
 type State = 'pending' | 'done' | 'error';
 
@@ -11,6 +12,7 @@ class ObservableMoviesStore {
 	state: State = 'done';
 	error = '';
 	currentPage = 1;
+	totalPage = 1;
 
 	constructor() {
 		makeObservable(this, {
@@ -18,6 +20,7 @@ class ObservableMoviesStore {
 			state: observable,
 			error: observable,
 			currentPage: observable,
+			totalPage: observable,
 			fetchMovies: action,
 			addMovies: action,
 			removeMovie: action,
@@ -26,14 +29,35 @@ class ObservableMoviesStore {
 		});
 	}
 
-	fetchMovies = () => {
+	fetchMovies = (page?: number) => {
 		if (this.state === 'pending') return;
-		this.state = 'pending';
-		getTitles(this.currentPage).then(this.addMovies, this.setError);
+		this.currentPage = page ?? this.currentPage;
+		if (this.totalPage >= this.currentPage) {
+			this.state = 'pending';
+			const params = getQueryParams({});
+			const objParams = params
+				.slice(1)
+				.split('&')
+				.reduce((acc, item) => {
+					const [key, value] = item.split('=');
+					const decodedString = decodeURIComponent(value);
+					return { ...acc, [key]: decodedString };
+				}, {});
+
+			getTitles(this.currentPage, objParams).then(
+				this.addMovies,
+				this.setError,
+			);
+		}
 	};
 
-	addMovies = (movies: ListItemProps[]) => {
-		this.movies.push(...movies);
+	addMovies = (data: ListItemsReq) => {
+		if (this.currentPage === 1) {
+			this.movies = data.docs;
+			this.totalPage = data.pages;
+		} else {
+			this.movies.push(...data.docs);
+		}
 		this.currentPage += 1;
 		this.state = 'done';
 	};
