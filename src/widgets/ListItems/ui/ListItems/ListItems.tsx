@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { useRef } from 'react';
+import { ReactElement, useRef, useState } from 'react';
 
 // небольшое нарушение fsd, но оно контролируемо
 import { ObservableMoviesStoreType } from '@/app/providers/store';
@@ -10,6 +10,7 @@ import { RemoveItemBtn } from '@/features/RemoveItemBtn';
 import { ListItem } from '@/entities/ListItem';
 
 import { useInfiniteScroll } from '@/shared/hooks/useInfiniteScroll/useInfiniteScroll';
+import { useThrottle } from '@/shared/hooks/useThrottle/useThrottle';
 
 import { SkeletonList } from '../SkeletonList';
 import styles from './styles.module.css';
@@ -18,38 +19,77 @@ interface ListItemsProps {
 	store: ObservableMoviesStoreType;
 }
 
+const ITEM_HEIGHT = 274;
+const WINDOW_HEIGHT = document.documentElement.clientHeight;
+const NODE_PADDING = 5;
+
 export const ListItems = observer(({ store }: ListItemsProps) => {
 	const triggerRef = useRef<HTMLDivElement | null>(null);
+	const wrapperRef = useRef<HTMLDivElement | null>(null);
+	const [scrollTop, setScrollTop] = useState(0);
+	const startIndex = Math.max(
+		Math.floor(scrollTop / ITEM_HEIGHT) - NODE_PADDING,
+		0,
+	);
+	let renderedNodesCount =
+		Math.floor(WINDOW_HEIGHT / ITEM_HEIGHT) + 2 * NODE_PADDING;
+	renderedNodesCount = Math.min(
+		store.movies.length - startIndex,
+		renderedNodesCount,
+	);
+
+	const generateRows = () => {
+		const items: ReactElement[] = [];
+		for (let i = 0; i < renderedNodesCount; i++) {
+			const index = i + startIndex;
+			items.push(
+				<div key={store.movies[index].id}>
+					<ListItem
+						movie={store.movies[index]}
+						changeDescription={
+							<ChangeDescription
+								id={store.movies[index].id}
+								description={store.movies[index].shortDescription}
+								changeDescriptionMovie={store.changeDescriptionMovie}
+							/>
+						}
+						removeItemBtn={
+							<RemoveItemBtn
+								id={store.movies[index].id}
+								removeMovie={store.removeMovie}
+							/>
+						}
+					/>
+				</div>,
+			);
+		}
+
+		return items;
+	};
 
 	useInfiniteScroll({
-		wrapperRef: undefined,
+		wrapperRef,
 		triggerRef,
 		callback: store.fetchMovies,
 	});
 
 	return (
 		<>
-			<ul className={styles.list}>
-				{store.movies.map((movie) => (
-					<li key={movie.id}>
-						<ListItem
-							movie={movie}
-							changeDescription={
-								<ChangeDescription
-									id={movie.id}
-									description={movie.shortDescription}
-									changeDescriptionMovie={store.changeDescriptionMovie}
-								/>
-							}
-							removeItemBtn={
-								<RemoveItemBtn id={movie.id} removeMovie={store.removeMovie} />
-							}
-						/>
-					</li>
-				))}
-			</ul>
-			<div ref={triggerRef}></div>
-			{store.state === 'pending' ? <SkeletonList /> : null}
+			<div
+				ref={wrapperRef}
+				style={{
+					height: `${WINDOW_HEIGHT}px`,
+					overflow: 'auto',
+				}}
+				onScroll={useThrottle((e) => {
+					setScrollTop(e.currentTarget.scrollTop);
+				}, 17)}>
+				<div style={{ transform: `translateY(${startIndex * ITEM_HEIGHT}px)` }}>
+					<ul className={styles.list}>{generateRows()}</ul>
+					<div ref={triggerRef} style={{ height: '1px' }}></div>
+					{store.state === 'pending' ? <SkeletonList /> : null}
+				</div>
+			</div>
 		</>
 	);
 });
