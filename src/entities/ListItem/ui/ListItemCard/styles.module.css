@@ -1,0 +1,17 @@
+.relative {
+	position: relative;
+}
+
+.removeItemBtn,
+.changeDescription {
+	position: absolute;
+	right: 15px;
+}
+
+.removeItemBtn {
+	top: 15px;
+}
+
+.changeDescription {
+	bottom: 15px;
+}

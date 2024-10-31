@@ -6,6 +6,7 @@ import { ListItemProps } from '@/shared/types';
 import { Image } from '@/shared/ui/Image';
 
 import { TextContent } from '../TextContent';
+import styles from './styles.module.css';
 
 export interface ListItemCardProps {
 	movie: ListItemProps;
@@ -17,8 +18,8 @@ export const ListItemCard = observer(
 	({ removeItemBtn, changeDescription, movie }: ListItemCardProps) => {
 		const { poster, name, enName, alternativeName } = movie;
 		return (
-			<Card size={'2'} style={{ height: '230px' }}>
-				<Flex align={'stretch'} gapX={'3'}>
+			<Card size={'2'} style={{ height: '230px' }} className={styles.relative}>
+				<Flex align={'stretch'} gapX={'3'} height={'100%'}>
 					<Box flexBasis={'108'}>
 						<Image
 							width={72}
@@ -27,14 +28,16 @@ export const ListItemCard = observer(
 							alt={name ?? enName ?? alternativeName}
 						/>
 					</Box>
-					<Box flexGrow={'1'}>
+					<Box>
 						<TextContent movie={movie} />
 					</Box>
-					<Flex justify={'between'} direction={'column'}>
+					<Flex direction={'column'} justify={'between'}>
 						{removeItemBtn}
 						{changeDescription}
 					</Flex>
 				</Flex>
+				{/* <div className={styles.removeItemBtn}>{removeItemBtn}</div>
+				<div className={styles.changeDescription}>{changeDescription}</div> */}
 			</Card>
 		);
 	},

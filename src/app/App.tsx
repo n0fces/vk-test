@@ -9,7 +9,7 @@ import './styles/reset.css';
 
 function App() {
 	return (
-		<Container size="4">
+		<Container size="4" className={styles.general}>
 			<Flex
 				direction={'column'}
 				gap={'5'}
