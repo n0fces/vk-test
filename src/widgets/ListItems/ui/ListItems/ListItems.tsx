@@ -1,6 +1,6 @@
 import { ScrollArea } from '@radix-ui/themes';
 import { observer } from 'mobx-react-lite';
-import { ReactElement, useRef, useState } from 'react';
+import { ReactElement, useEffect, useRef, useState } from 'react';
 
 // небольшое нарушение fsd, но оно контролируемо
 import { ObservableMoviesStoreType } from '@/app/providers/store';
@@ -23,19 +23,19 @@ interface ListItemsProps {
 }
 
 const ITEM_HEIGHT = 254;
-const WINDOW_HEIGHT = document.documentElement.clientHeight;
 const NODE_PADDING = 5;
 
 export const ListItems = observer(({ store }: ListItemsProps) => {
 	const triggerRef = useRef<HTMLDivElement | null>(null);
 	const wrapperRef = useRef<HTMLDivElement | null>(null);
 	const [scrollTop, setScrollTop] = useState(0);
+	const [availableHeight, setAvailableHeight] = useState(window.innerHeight);
 	const startIndex = Math.max(
 		Math.floor(scrollTop / ITEM_HEIGHT) - NODE_PADDING,
 		0,
 	);
 	let renderedNodesCount =
-		Math.floor(WINDOW_HEIGHT / ITEM_HEIGHT) + 2 * NODE_PADDING;
+		Math.floor(availableHeight / ITEM_HEIGHT) + 2 * NODE_PADDING;
 	renderedNodesCount = Math.min(
 		store.movies.length - startIndex,
 		renderedNodesCount,
@@ -76,6 +76,26 @@ export const ListItems = observer(({ store }: ListItemsProps) => {
 		callback: store.fetchMovies,
 	});
 
+	useEffect(() => {
+		const updateAvailableHeight = () => {
+			const filterPanelHeight =
+				document.getElementById('filterPanel')?.offsetHeight || 0;
+
+			const height =
+				window.innerWidth > 768
+					? window.innerHeight - 20
+					: window.innerHeight - filterPanelHeight - 20 - 24;
+			setAvailableHeight(height);
+		};
+
+		window.addEventListener('resize', updateAvailableHeight);
+		updateAvailableHeight();
+
+		return () => {
+			window.removeEventListener('resize', updateAvailableHeight);
+		};
+	}, []);
+
 	return (
 		<ScrollArea
 			data-testid="ScrollArea"
@@ -84,11 +104,11 @@ export const ListItems = observer(({ store }: ListItemsProps) => {
 			size={'2'}
 			scrollbars="vertical"
 			style={{
-				height: `${WINDOW_HEIGHT}px`,
+				height: `${availableHeight}px`,
 			}}
 			onScroll={useThrottle((e) => {
 				setScrollTop(e.currentTarget.scrollTop);
-			}, 17)}>
+			}, 50)}>
 			<div style={{ transform: `translateY(${startIndex * ITEM_HEIGHT}px)` }}>
 				<ul className={styles.list}>{generateRows()}</ul>
 				<div ref={triggerRef} style={{ height: '1px' }}></div>

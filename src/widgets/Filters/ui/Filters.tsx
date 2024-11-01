@@ -15,7 +15,7 @@ interface FiltersProps {
 
 export const Filters = ({ store }: FiltersProps) => {
 	return (
-		<Card className={styles.card}>
+		<Card className={styles.card} id="filterPanel">
 			<Flex direction={'column'} gap={'2'}>
 				<SelectCountry refetch={store.fetchMovies} />
 				<SelectGenre refetch={store.fetchMovies} />

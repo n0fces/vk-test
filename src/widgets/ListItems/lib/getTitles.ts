@@ -7,6 +7,7 @@ export const getTitles = async (
 ) => {
 	const { data, status } = await api.get<ListItemsReq>('v1.4/movie', {
 		params: {
+			limit: 20,
 			lists: 'popular-films',
 			notNullFields: ['id', 'shortDescription'],
 			selectFields: [
