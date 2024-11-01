@@ -13,5 +13,6 @@ export const getQueryParams = (params: Record<string, string>) => {
 			searchParams.set(name, value);
 		}
 	});
-	return `?${searchParams.toString()}`;
+
+	return searchParams.toString() === '' ? '' : `?${searchParams.toString()}`;
 };

@@ -5,6 +5,8 @@ import { getQueryParams } from '../getQueryParams/getQueryParams';
  * @param params - объект с новыми параметрами на добавление
  */
 export const addQueryParams = (params: Record<string, string>) => {
-	// в конце концов, мы обновленный объект с параметрами пушим в адресную строку
-	window.history.pushState(null, '', getQueryParams(params));
+	const queryString = getQueryParams(params);
+	const newUrl = queryString ? queryString : window.location.pathname;
+
+	window.history.pushState(null, '', newUrl);
 };
