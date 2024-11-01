@@ -9,14 +9,14 @@ interface SkeletonListProps {
 const SkeletonItem = () => (
 	<li>
 		<Card size={'2'}>
-			<Flex align={'stretch'} gapX={'5'}>
-				<Skeleton width={'100px'} height={'150px'} />
+			<Flex align={'stretch'} gapX={'3'} className={styles.item}>
+				<Skeleton width={'72px'} height={'108px'} />
 				<Box flexGrow={'1'}>
 					<Flex gapY={'3'} direction={'column'} align={'start'}>
-						<Skeleton width={'100px'} height={'24px'} />
-						<Skeleton width={'125px'} height={'16px'} />
-						<Skeleton width={'150px'} height={'16px'} />
-						<Skeleton width={'400px'} height={'32px'} />
+						<Skeleton maxWidth={'100px'} width={'100%'} height={'20px'} />
+						<Skeleton maxWidth={'125px'} width={'100%'} height={'16px'} />
+						<Skeleton maxWidth={'150px'} width={'100%'} height={'16px'} />
+						<Skeleton maxWidth={'400px'} width={'100%'} height={'32px'} />
 					</Flex>
 				</Box>
 			</Flex>

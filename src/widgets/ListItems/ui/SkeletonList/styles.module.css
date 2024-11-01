@@ -3,3 +3,9 @@
 	flex-direction: column;
 	row-gap: 1.5rem;
 }
+
+@media (width > 768px) {
+	.item {
+		gap: 1.5rem;
+	}
+}
