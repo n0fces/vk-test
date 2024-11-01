@@ -66,4 +66,12 @@ export default tseslint.config(
 			'vitest/max-nested-describe': ['error', { max: 3 }],
 		},
 	},
+	{
+		name: 'overries',
+		files: ['**/*.test.{ts,tsx}'],
+		rules: {
+			'@typescript-eslint/no-unsafe-call': 'off',
+			'@typescript-eslint/no-unsafe-assignment': 'off',
+		},
+	},
 );
