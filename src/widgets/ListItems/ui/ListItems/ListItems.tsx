@@ -15,7 +15,7 @@ import { useThrottle } from '@/shared/hooks/useThrottle/useThrottle';
 
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { NothingWasFound } from '../NothingWasFound/NothingWasFound';
-import { SkeletonList } from '../SkeletonList';
+import { SkeletonList } from '../SkeletonList/SkeletonList';
 import styles from './styles.module.css';
 
 interface ListItemsProps {

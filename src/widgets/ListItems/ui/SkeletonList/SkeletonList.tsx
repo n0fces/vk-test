@@ -1,5 +1,7 @@
 import { Box, Card, Flex, Skeleton } from '@radix-ui/themes';
 
+import styles from './styles.module.css';
+
 interface SkeletonListProps {
 	length?: number;
 }
@@ -24,7 +26,7 @@ const SkeletonItem = () => (
 
 export const SkeletonList = ({ length = 10 }: SkeletonListProps) => {
 	return (
-		<ul data-testid="SkeletonList">
+		<ul data-testid="SkeletonList" className={styles.list}>
 			{/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
 			{[...Array(length)].map((_, i) => (
 				<SkeletonItem key={i} />
