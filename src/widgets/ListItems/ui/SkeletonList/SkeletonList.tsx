@@ -1,9 +1,12 @@
 import { Box, Card, Flex, Skeleton } from '@radix-ui/themes';
 
+import { stringWithDelimiter } from '@/shared/helpers/stringWithDelimiter/stringWithDelimiter';
+
 import styles from './styles.module.css';
 
 interface SkeletonListProps {
 	length?: number;
+	className?: string;
 }
 
 const SkeletonItem = () => (
@@ -24,9 +27,13 @@ const SkeletonItem = () => (
 	</li>
 );
 
-export const SkeletonList = ({ length = 10 }: SkeletonListProps) => {
+export const SkeletonList = ({ length = 10, className }: SkeletonListProps) => {
 	return (
-		<ul data-testid="SkeletonList" className={styles.list}>
+		<ul
+			data-testid="SkeletonList"
+			className={
+				stringWithDelimiter(' ', [styles.list, className]) ?? undefined
+			}>
 			{/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
 			{[...Array(length)].map((_, i) => (
 				<SkeletonItem key={i} />

@@ -112,7 +112,11 @@ export const ListItems = observer(({ store }: ListItemsProps) => {
 			<div style={{ transform: `translateY(${startIndex * ITEM_HEIGHT}px)` }}>
 				<ul className={styles.list}>{generateRows()}</ul>
 				<div ref={triggerRef} style={{ height: '1px' }}></div>
-				{store.state === 'pending' ? <SkeletonList /> : null}
+				{store.state === 'pending' ? (
+					<SkeletonList
+						className={store.currentPage > 1 ? styles.skeletonGap : undefined}
+					/>
+				) : null}
 				{store.totalPage === 0 ? <NothingWasFound /> : null}
 				{store.error !== '' ? <ErrorMessage error={store.error} /> : null}
 			</div>
