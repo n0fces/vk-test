@@ -1,4 +1,4 @@
-import { action, makeObservable, observable } from 'mobx';
+import { makeAutoObservable } from 'mobx';
 
 import { getTitles } from '@/widgets/ListItems';
 
@@ -15,18 +15,7 @@ class ObservableMoviesStore {
 	totalPage = 1;
 
 	constructor() {
-		makeObservable(this, {
-			movies: observable,
-			state: observable,
-			error: observable,
-			currentPage: observable,
-			totalPage: observable,
-			fetchMovies: action,
-			addMovies: action,
-			removeMovie: action,
-			changeDescriptionMovie: action,
-			setError: action,
-		});
+		makeAutoObservable(this);
 	}
 
 	fetchMovies = (page?: number) => {
@@ -34,6 +23,9 @@ class ObservableMoviesStore {
 		this.currentPage = page ?? this.currentPage;
 		if (this.totalPage === 0 || this.totalPage >= this.currentPage) {
 			this.state = 'pending';
+			if (this.currentPage === 1) {
+				this.movies = [];
+			}
 			const objParams = getQueryParamsObj();
 
 			getTitles(this.currentPage, objParams).then(
