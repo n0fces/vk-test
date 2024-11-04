@@ -2,7 +2,7 @@ import { action, makeObservable, observable } from 'mobx';
 
 import { getTitles } from '@/widgets/ListItems';
 
-import { getQueryParams } from '@/shared/helpers/getQueryParams/getQueryParams';
+import { getQueryParamsObj } from '@/shared/helpers/getQueryParamsObj/getQueryParamsObj';
 import { ListItemProps, ListItemsReq } from '@/shared/types';
 
 type State = 'pending' | 'done';
@@ -34,15 +34,7 @@ class ObservableMoviesStore {
 		this.currentPage = page ?? this.currentPage;
 		if (this.totalPage === 0 || this.totalPage >= this.currentPage) {
 			this.state = 'pending';
-			const params = getQueryParams({});
-			const objParams = params
-				.slice(1)
-				.split('&')
-				.reduce((acc, item) => {
-					const [key, value] = item.split('=');
-					const decodedString = decodeURIComponent(value);
-					return { ...acc, [key]: decodedString };
-				}, {});
+			const objParams = getQueryParamsObj();
 
 			getTitles(this.currentPage, objParams).then(
 				this.addMovies,

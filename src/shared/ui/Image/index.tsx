@@ -21,6 +21,6 @@ export const Image = ({ src, alt, width, height, ...props }: ImageProps) => {
 			{...props}
 		/>
 	) : (
-		<div style={{ width, height, backgroundColor: '#000' }}></div>
+		<div style={{ width, height, backgroundColor: '#ccc' }}></div>
 	);
 };

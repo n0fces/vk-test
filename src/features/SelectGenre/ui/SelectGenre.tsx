@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 import { addQueryParams } from '@/shared/helpers/addQueryParams/addQueryParams';
-import { getSearchParam } from '@/shared/helpers/getSearchParam/getSearchParam';
+import { getQueryParam } from '@/shared/helpers/getQueryParam/getQueryParam';
 import { Select } from '@/shared/ui/Select';
 
 import { genres } from '../constants/genres';
@@ -23,7 +23,7 @@ export const SelectGenre = ({ refetch }: SelectGenreProps) => {
 		<Select
 			options={genres}
 			callback={setCountry}
-			defaultValue={getSearchParam('genres.name') ?? 'default'}
+			defaultValue={getQueryParam('genres.name') ?? 'default'}
 		/>
 	);
 };

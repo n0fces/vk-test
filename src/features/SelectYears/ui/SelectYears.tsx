@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 import { addQueryParams } from '@/shared/helpers/addQueryParams/addQueryParams';
-import { getSearchParam } from '@/shared/helpers/getSearchParam/getSearchParam';
+import { getQueryParam } from '@/shared/helpers/getQueryParam/getQueryParam';
 import { Select } from '@/shared/ui/Select';
 
 import { years } from '../constants/years';
@@ -23,7 +23,7 @@ export const SelectYears = ({ refetch }: SelectYearsProps) => {
 		<Select
 			options={years}
 			callback={setCountry}
-			defaultValue={getSearchParam('year') ?? 'default'}
+			defaultValue={getQueryParam('year') ?? 'default'}
 		/>
 	);
 };
