@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 
 import { getTitles } from '@/widgets/ListItems';
 
@@ -28,10 +28,14 @@ class ObservableMoviesStore {
 			}
 			const objParams = getQueryParamsObj();
 
-			getTitles(this.currentPage, objParams).then(
-				this.addMovies,
-				this.setError,
-			);
+			getTitles(this.currentPage, objParams)
+				.then(this.addMovies)
+				.catch(this.setError)
+				.finally(() => {
+					runInAction(() => {
+						this.state = 'done';
+					});
+				});
 		}
 	};
 
@@ -44,7 +48,6 @@ class ObservableMoviesStore {
 			this.movies.push(...data.docs);
 		}
 		this.currentPage += 1;
-		this.state = 'done';
 	};
 
 	removeMovie = (id: number) => {

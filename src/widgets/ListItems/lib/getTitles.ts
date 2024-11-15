@@ -5,7 +5,7 @@ export const getTitles = async (
 	page: number,
 	params: Record<string, string>,
 ) => {
-	const { data, status } = await api.get<ListItemsReq>('v1.4/movie', {
+	const response = await api.get<ListItemsReq>('v1.4/movie', {
 		params: {
 			limit: 20,
 			lists: 'popular-films',
@@ -30,9 +30,5 @@ export const getTitles = async (
 		},
 	});
 
-	if (status !== 200) {
-		throw new Error('Failed to fetch data');
-	}
-
-	return data;
+	return response.data;
 };
