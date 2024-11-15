@@ -10,6 +10,7 @@ import { RemoveItemBtn } from '@/features/RemoveItemBtn';
 
 import { ListItem } from '@/entities/ListItem';
 
+import { getQueryParams } from '@/shared/helpers/getQueryParams/getQueryParams';
 import { useInfiniteScroll } from '@/shared/hooks/useInfiniteScroll/useInfiniteScroll';
 import { useThrottle } from '@/shared/hooks/useThrottle/useThrottle';
 
@@ -30,6 +31,17 @@ export const ListItems = observer(({ store }: ListItemsProps) => {
 	const wrapperRef = useRef<HTMLDivElement | null>(null);
 	const [scrollTop, setScrollTop] = useState(0);
 	const [availableHeight, setAvailableHeight] = useState(window.innerHeight);
+	const initialQueryParams = getQueryParams({});
+	const [queryies, setQueryies] = useState(initialQueryParams);
+
+	if (queryies !== initialQueryParams) {
+		setQueryies(initialQueryParams);
+		setScrollTop(0);
+		if (wrapperRef.current) {
+			wrapperRef.current.scrollTop = 0;
+		}
+	}
+
 	const startIndex = Math.max(
 		Math.floor(scrollTop / ITEM_HEIGHT) - NODE_PADDING,
 		0,
