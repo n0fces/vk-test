@@ -9,7 +9,7 @@ export const getTitles = async (
 		params: {
 			limit: 20,
 			lists: 'popular-films',
-			notNullFields: ['id', 'shortDescription'],
+			notNullFields: ['shortDescription'],
 			selectFields: [
 				'id',
 				'poster',
