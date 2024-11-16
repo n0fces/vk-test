@@ -126,11 +126,16 @@ export const ListItems = observer(({ store }: ListItemsProps) => {
 				<div ref={triggerRef} style={{ height: '1px' }}></div>
 				{store.state === 'pending' ? (
 					<SkeletonList
-						className={store.currentPage > 1 ? styles.skeletonGap : undefined}
+						className={store.currentPage > 1 ? styles.gap : undefined}
 					/>
 				) : null}
 				{store.totalPage === 0 ? <NothingWasFound /> : null}
-				{store.error !== '' ? <ErrorMessage error={store.error} /> : null}
+				{store.error !== '' ? (
+					<ErrorMessage
+						error={store.error}
+						className={store.currentPage > 1 ? styles.gap : undefined}
+					/>
+				) : null}
 			</div>
 		</ScrollArea>
 	);
