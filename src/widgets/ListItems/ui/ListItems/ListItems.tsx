@@ -85,7 +85,11 @@ export const ListItems = observer(({ store }: ListItemsProps) => {
 	useInfiniteScroll({
 		wrapperRef,
 		triggerRef,
-		callback: store.fetchMovies,
+		callback: () => {
+			if (store.state !== 'pending') {
+				store.fetchMovies();
+			}
+		},
 	});
 
 	useEffect(() => {
