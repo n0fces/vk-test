@@ -1,6 +1,6 @@
 import { ScrollArea } from '@radix-ui/themes';
 import { observer } from 'mobx-react-lite';
-import { ReactElement, useEffect, useRef, useState } from 'react';
+import { ReactElement, useRef, useState } from 'react';
 
 // небольшое нарушение fsd, но оно контролируемо
 import { ObservableMoviesStoreType } from '@/app/providers/store';
@@ -14,6 +14,7 @@ import { getQueryParams } from '@/shared/helpers/getQueryParams/getQueryParams';
 import { useInfiniteScroll } from '@/shared/hooks/useInfiniteScroll/useInfiniteScroll';
 import { useThrottle } from '@/shared/hooks/useThrottle/useThrottle';
 
+import { useAvaibleHeight } from '../../hooks/useAvaibleHeight';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { NothingWasFound } from '../NothingWasFound/NothingWasFound';
 import { SkeletonList } from '../SkeletonList/SkeletonList';
@@ -30,7 +31,6 @@ export const ListItems = observer(({ store }: ListItemsProps) => {
 	const triggerRef = useRef<HTMLDivElement | null>(null);
 	const wrapperRef = useRef<HTMLDivElement | null>(null);
 	const [scrollTop, setScrollTop] = useState(0);
-	const [availableHeight, setAvailableHeight] = useState(window.innerHeight);
 	const initialQueryParams = getQueryParams({});
 	const [queryies, setQueryies] = useState(initialQueryParams);
 
@@ -41,6 +41,18 @@ export const ListItems = observer(({ store }: ListItemsProps) => {
 			wrapperRef.current.scrollTop = 0;
 		}
 	}
+
+	const availableHeight = useAvaibleHeight();
+
+	useInfiniteScroll({
+		wrapperRef,
+		triggerRef,
+		callback: () => {
+			if (store.state !== 'pending') {
+				store.fetchMovies();
+			}
+		},
+	});
 
 	const startIndex = Math.max(
 		Math.floor(scrollTop / ITEM_HEIGHT) - NODE_PADDING,
@@ -81,36 +93,6 @@ export const ListItems = observer(({ store }: ListItemsProps) => {
 
 		return items;
 	};
-
-	useInfiniteScroll({
-		wrapperRef,
-		triggerRef,
-		callback: () => {
-			if (store.state !== 'pending') {
-				store.fetchMovies();
-			}
-		},
-	});
-
-	useEffect(() => {
-		const updateAvailableHeight = () => {
-			const filterPanelHeight =
-				document.getElementById('filterPanel')?.offsetHeight || 0;
-
-			const height =
-				window.innerWidth > 768
-					? window.innerHeight - 20
-					: window.innerHeight - filterPanelHeight - 20 - 24;
-			setAvailableHeight(height);
-		};
-
-		window.addEventListener('resize', updateAvailableHeight);
-		updateAvailableHeight();
-
-		return () => {
-			window.removeEventListener('resize', updateAvailableHeight);
-		};
-	}, []);
 
 	return (
 		<ScrollArea
