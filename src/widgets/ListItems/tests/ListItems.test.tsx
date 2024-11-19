@@ -126,6 +126,7 @@ const mockStore = {
 	error: '',
 	currentPage: 1,
 	totalPage: 1,
+	movieChanges: new Map(),
 	fetchMovies: vi.fn(),
 	addMovies: vi.fn(),
 	removeMovie: vi.fn(),
