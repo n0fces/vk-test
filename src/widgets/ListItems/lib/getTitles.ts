@@ -4,6 +4,7 @@ import { ListItemsReq } from '@/shared/types';
 export const getTitles = async (
 	page: number,
 	params: Record<string, string>,
+	signal: AbortSignal,
 ) => {
 	const response = await api.get<ListItemsReq>('v1.4/movie', {
 		params: {
@@ -28,6 +29,7 @@ export const getTitles = async (
 			page,
 			...params,
 		},
+		signal,
 	});
 
 	return response.data;

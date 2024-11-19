@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from 'mobx';
 
 import { getTitles } from '@/widgets/ListItems';
 
+import { AbortRequest } from '@/shared/errors/abortRequest';
 import { getQueryParamsObj } from '@/shared/helpers/getQueryParamsObj/getQueryParamsObj';
 import { customFilter } from '@/shared/helpers/stringWithDelimiter/stringWithDelimiter';
 import { ListItemProps, ListItemsReq } from '@/shared/types';
@@ -22,37 +23,48 @@ class ObservableMoviesStore {
 	currentPage = 1;
 	totalPage = 1;
 	movieChanges: MovieChangesMap<number, MovieChanges> = new Map();
+	abortController: AbortController | null = null;
 
 	constructor() {
 		makeAutoObservable(this);
 	}
 
 	fetchMovies = (page?: number) => {
-		if (this.state === 'pending') return;
+		if (this.state === 'pending') {
+			this.cancelFetch();
+		}
 		this.currentPage = page ?? this.currentPage;
 		const isFetchingWithNewQueries = page === 1;
 		if (isFetchingWithNewQueries || this.totalPage >= this.currentPage) {
 			this.state = 'pending';
+
 			if (isFetchingWithNewQueries) {
 				this.movies = [];
 			}
-			const objParams = getQueryParamsObj();
 
-			getTitles(this.currentPage, objParams)
+			this.abortController = new AbortController();
+			const { signal } = this.abortController;
+
+			const objParams = getQueryParamsObj();
+			getTitles(this.currentPage, objParams, signal)
 				.then(this.addMovies)
 				.catch(this.setError)
 				.finally(() => {
 					runInAction(() => {
-						this.state = 'done';
+						this.abortController = null;
 					});
 				});
 		}
 	};
 
+	cancelFetch = () => {
+		if (this.abortController) {
+			this.abortController.abort();
+		}
+	};
+
 	addMovies = (data: ListItemsReq) => {
 		if (this.error !== '') this.error = '';
-
-		console.log(data);
 
 		const updateMovies = data.docs
 			.map((movie) => {
@@ -73,6 +85,7 @@ class ObservableMoviesStore {
 		} else {
 			this.movies.push(...updateMovies);
 		}
+		this.state = 'done';
 		this.currentPage += 1;
 	};
 
@@ -97,8 +110,10 @@ class ObservableMoviesStore {
 	};
 
 	setError = (error: unknown) => {
-		if (error instanceof Error) {
+		const isAborted = error instanceof AbortRequest;
+		if (!isAborted && error instanceof Error) {
 			this.error = error.message;
+			this.state = 'done';
 		}
 	};
 }
