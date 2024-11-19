@@ -3,9 +3,17 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import { getTitles } from '@/widgets/ListItems';
 
 import { getQueryParamsObj } from '@/shared/helpers/getQueryParamsObj/getQueryParamsObj';
+import { customFilter } from '@/shared/helpers/stringWithDelimiter/stringWithDelimiter';
 import { ListItemProps, ListItemsReq } from '@/shared/types';
 
 type State = 'pending' | 'done';
+
+interface MovieChanges {
+	descriptionChanged?: string;
+	removed?: boolean;
+}
+
+type MovieChangesMap<T, U> = Map<T, U>;
 
 class ObservableMoviesStore {
 	movies: ListItemProps[] = [];
@@ -13,6 +21,7 @@ class ObservableMoviesStore {
 	error = '';
 	currentPage = 1;
 	totalPage = 1;
+	movieChanges: MovieChangesMap<number, MovieChanges> = new Map();
 
 	constructor() {
 		makeAutoObservable(this);
@@ -41,23 +50,46 @@ class ObservableMoviesStore {
 
 	addMovies = (data: ListItemsReq) => {
 		if (this.error !== '') this.error = '';
+
+		const updateMovies = data.docs
+			.map((movie) => {
+				const changes = this.movieChanges.get(movie.id);
+				if (changes?.removed) {
+					return null;
+				}
+				if (changes?.descriptionChanged) {
+					movie.shortDescription = changes.descriptionChanged;
+				}
+				return movie;
+			})
+			.filter(customFilter);
+
 		if (this.currentPage === 1) {
-			this.movies = data.docs;
+			this.movies = updateMovies;
 			this.totalPage = data.pages;
 		} else {
-			this.movies.push(...data.docs);
+			this.movies.push(...updateMovies);
 		}
 		this.currentPage += 1;
 	};
 
 	removeMovie = (id: number) => {
 		this.movies = this.movies.filter((movie) => movie.id !== id);
+
+		const currentChanges = this.movieChanges.get(id) || {};
+		this.movieChanges.set(id, { ...currentChanges, removed: true });
 	};
 
 	changeDescriptionMovie = (id: number, description: string) => {
 		const movieIdx = this.movies.findIndex((movie) => movie.id === id);
 		if (movieIdx !== -1) {
 			this.movies[movieIdx].shortDescription = description;
+
+			const currentChanges = this.movieChanges.get(id) || {};
+			this.movieChanges.set(id, {
+				...currentChanges,
+				descriptionChanged: description,
+			});
 		}
 	};
 

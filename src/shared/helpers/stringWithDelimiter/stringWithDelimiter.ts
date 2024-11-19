@@ -1,4 +1,4 @@
-const customFilter = <T>(x: T | undefined | null | ''): x is T =>
+export const customFilter = <T>(x: T | undefined | null | ''): x is T =>
 	x !== undefined && x !== null && x !== '';
 
 /**
