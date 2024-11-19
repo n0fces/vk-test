@@ -30,9 +30,10 @@ class ObservableMoviesStore {
 	fetchMovies = (page?: number) => {
 		if (this.state === 'pending') return;
 		this.currentPage = page ?? this.currentPage;
-		if (this.totalPage === 0 || this.totalPage >= this.currentPage) {
+		const isFetchingWithNewQueries = page === 1;
+		if (isFetchingWithNewQueries || this.totalPage >= this.currentPage) {
 			this.state = 'pending';
-			if (this.currentPage === 1) {
+			if (isFetchingWithNewQueries) {
 				this.movies = [];
 			}
 			const objParams = getQueryParamsObj();
@@ -50,6 +51,8 @@ class ObservableMoviesStore {
 
 	addMovies = (data: ListItemsReq) => {
 		if (this.error !== '') this.error = '';
+
+		console.log(data);
 
 		const updateMovies = data.docs
 			.map((movie) => {

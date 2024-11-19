@@ -48,7 +48,7 @@ export const ListItems = observer(({ store }: ListItemsProps) => {
 		wrapperRef,
 		triggerRef,
 		callback: () => {
-			if (store.state !== 'pending') {
+			if (store.state !== 'pending' && store.error === '') {
 				store.fetchMovies();
 			}
 		},
